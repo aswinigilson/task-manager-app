@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Buy Groceries",
+        "description": "Milk, eggs, bread",
+        "priority": "High"
+    },
+    {
+        "name": "Finish Project",
+        "description": "Complete Python assignment",
+        "priority": "Medium"
+    }
+]
