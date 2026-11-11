@@ -36,7 +36,7 @@ def read_tasks():
         return []
 
 
-def write_tasks(tasks):
+def save_tasks(tasks):
     try:
         TASKS_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -47,6 +47,6 @@ def write_tasks(tasks):
 
         return True
 
-    except OSError as error:
+    except (OSError, TypeError, ValueError) as error:
         print(f"Error saving tasks: {error}")
         return False

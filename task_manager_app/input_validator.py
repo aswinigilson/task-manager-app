@@ -19,14 +19,16 @@ def validate_string_input(prompt, pattern=None, allow_blank=False):
         return value
 
 
-def validate_priority(prompt="Enter priority (High/Medium/Low): "):
-    while True:
-        priority = input(prompt).strip().capitalize()
+def validate_priority():
+    priority = input(
+        "Enter priority (High/Medium/Low): "
+    ).strip().capitalize()
 
-        if priority in ["High", "Medium", "Low"]:
-            return priority
-
+    if priority not in ["High", "Medium", "Low"]:
         print("Invalid priority. Please enter High, Medium, or Low.")
+        return None
+
+    return priority
 
 
 def validate_task_index(prompt, task_count):

@@ -1,4 +1,6 @@
-from task_manager_app import Task, read_tasks, write_tasks
+
+from task_manager_app import Task, read_tasks, save_tasks
+
 from task_manager_app.input_validator import (
     validate_string_input,
     validate_priority,
@@ -52,15 +54,18 @@ def add_task(tasks):
 
     priority = validate_priority()
 
+    if priority is None:
+        print("Task creation failed.")
+        return
+
     task = Task(name, description, priority)
     tasks.append(task)
 
-    if write_tasks(tasks):
+    if save_tasks(tasks):
         print(f"Task '{name}' added successfully!")
     else:
         tasks.pop()
         print("Task creation failed.")
-
 
 def update_task(tasks):
     print("\n--- Update Task ---")
@@ -88,23 +93,31 @@ def update_task(tasks):
         allow_blank=True
     )
 
+    # Validate the updated priority
     while True:
-        new_priority = input(
-            f"New priority [{task.priority}] (High/Medium/Low): "
+        priority_input = input(
+            f"New priority [{task.priority}] "
+            "(High/Medium/Low, Enter to keep): "
         ).strip()
 
-        if new_priority == "":
+        if not priority_input:
             new_priority = task.priority
             break
 
-        new_priority = new_priority.capitalize()
+        priority_input = priority_input.capitalize()
 
-        if new_priority in ["High", "Medium", "Low"]:
+        if priority_input in ("High", "Medium", "Low"):
+            new_priority = priority_input
             break
 
         print("Invalid priority. Please enter High, Medium, or Low.")
 
-    old_values = task.name, task.description, task.priority
+    # Preserve original values for rollback
+    old_values = (
+        task.name,
+        task.description,
+        task.priority
+    )
 
     if new_name:
         task.name = new_name
@@ -114,7 +127,7 @@ def update_task(tasks):
 
     task.priority = new_priority
 
-    if write_tasks(tasks):
+    if save_tasks(tasks):
         print(f"Task '{task.name}' updated successfully!")
     else:
         task.name, task.description, task.priority = old_values
@@ -144,7 +157,7 @@ def delete_task(tasks):
 
     deleted_task = tasks.pop(index)
 
-    if write_tasks(tasks):
+    if save_tasks(tasks):
         print(f"Task '{deleted_task.name}' deleted successfully!")
     else:
         tasks.insert(index, deleted_task)
