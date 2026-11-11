@@ -62,7 +62,7 @@ def add_task(tasks):
     tasks.append(task)
 
     if save_tasks(tasks):
-        print(f"Task '{name}' added successfully!")
+        print("Task added successfully!")
     else:
         tasks.pop()
         print("Task creation failed.")
@@ -128,7 +128,7 @@ def update_task(tasks):
     task.priority = new_priority
 
     if save_tasks(tasks):
-        print(f"Task '{task.name}' updated successfully!")
+        print("Task updated successfully!")
     else:
         task.name, task.description, task.priority = old_values
         print("Task update failed.")
@@ -158,11 +158,11 @@ def delete_task(tasks):
     deleted_task = tasks.pop(index)
 
     if save_tasks(tasks):
-        print(f"Task '{deleted_task.name}' deleted successfully!")
+        print("Task deleted successfully!")
+        display_tasks(tasks)  # Added this line
     else:
         tasks.insert(index, deleted_task)
         print("Task deletion failed.")
-
 
 def main():
     tasks = read_tasks()
